@@ -1,24 +1,33 @@
 # initialize the scoring logic by loading the model
 def init():
+    import numpy
+    import scipy
+    from sklearn.linear_model import LogisticRegression
+    
     global model
-    print("Loading the model")
-    # TO DO: load model
+    import pickle
+    # load model file
+    f = open('model.pkl', 'rb')
+    # deserialize it into a scikit-learn model
+    model = pickle.load(f)
+    f.close()
 
-# score a row of data
 def run(inputString):
     import json
+    import numpy
     try:
         input_list = json.loads(inputString)
     except ValueError:
-        return "Bad input: expecting a JSON encoded list of lists."
+        return "bad input: expecting a JSON encoded list of lists."
+    input_array = numpy.array(input_list)
+    if (input_array.shape != (1, 4)):
+        return 'bad input: expecting a JSON encoded list of lists of shape (1,4).'
+    
+    # make prediction
+    score = model.predict(input_array)[0]
+    return str(score)
 
-    # TO DO: score model    
-    print("Score the model")
-    return 42
-
-# test scoring script
 if __name__ == '__main__':
     import json
     init()
-    score = run(json.dump([[1,2,3,4,5,"data"]]))
-    print(score)
+    print (run(json.dumps([[1,2,3,4]])))

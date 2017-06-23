@@ -1,24 +1,40 @@
-import numpy
+import pickle
+import sys
 import pandas as pd
-import sklearn
+import numpy as np
+
+from sklearn.linear_model import LinearRegression
+from sklearn.metrics import mean_squared_error
+from sklearn import cross_validation
 
 from azureml_sdk import data_collector
 
-# initialize the logger
-run_logger = data_collector.current_run()
+run_logger = data_collector.current_run() 
 
-######## Load Data ##############
-# TO DO: load data
+# load data
+data = pd.read_csv('mydata.csv', delimiter=',', na_values="n/a")
+print ('Dataset shape: {}'.format(data.shape))
 
+# split
+train, test = sklearn.cross_validation.train_test_split(data, train_size=0.7, random_state=123)
 
-######## Train a Model ##########
-# TO DO: train model
+# load features and labels, assuming the last col is the label col.
+X_train = train.iloc[:, :-1]
+Y_train = train.iloc[:, -1]
+X_test = test.iloc[:, :-1]
+Y_test = test.iloc[:, -1]
 
+# train the model
+model = sklearn.linear_model.LinearRegression()
+model.fit(X_train, Y_train)
 
-######## Evaluate the Model #####
-# TO DO: evaluate model
-run_logger.log('Magic Number', 42)
+# evaluate the model
+Y_pred = model.predict(X_test)
+mse = mean_squared_error(Y_test, Y_pred)
+print('Mean Squared Error: {}.'.format(mse))
+run_logger.log("Mean Squared Error", mse)
 
-
-######## Persist the Model ######
-# TO DO: persist model
+# serialize the model on disk in the special 'outputs' folder
+f = open('./outputs/model.pkl', 'wb')
+pickle.dump(model, f)
+f.close()
