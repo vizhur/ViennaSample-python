@@ -1,7 +1,8 @@
 def init():
     from pyspark.ml import PipelineModel
     global m
-    m = PipelineModel.load("myModel.mml")
+    # deserialize the Spark ML pipeline
+    m = PipelineModel.load("mySparkMLModel.mml")
     
 def run(inputString):
     import json
@@ -10,7 +11,14 @@ def run(inputString):
 
     inputJson = json.loads(inputString)
     df = spark.createDataFrame(sc.parallelize(inputJson))
-    df = df.select(col("_1").alias("col1"), col("_2").alias("col2")))
+    # add schema back
+    df = df.select(col("_1").alias("feature1"), col("_2").alias("feature2"), col("_3").alias("label")))
 
+    # score the model
     score = m.transform(df).collect()[0]['prediction']   
     return score
+
+if __name__ == '__main__':
+    init()
+    import json
+    print (run(json.dumps([[42, "red", 999]])))

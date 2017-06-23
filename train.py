@@ -9,6 +9,7 @@ from sklearn import cross_validation
 
 from azureml_sdk import data_collector
 
+# Initialize the logger
 run_logger = data_collector.current_run() 
 
 # load data
@@ -32,6 +33,8 @@ model.fit(X_train, Y_train)
 Y_pred = model.predict(X_test)
 mse = mean_squared_error(Y_test, Y_pred)
 print('Mean Squared Error: {}.'.format(mse))
+
+# log MSE
 run_logger.log("Mean Squared Error", mse)
 
 # serialize the model on disk in the special 'outputs' folder
