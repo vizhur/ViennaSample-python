@@ -5,7 +5,7 @@ import mmlspark
 from mmlspark.TrainClassifier import TrainClassifier
 from mmlspark.ComputeModelStatistics import ComputeModelStatistics
 
-from azureml_sdk import data_collector
+from azureml.sdk import data_collector
 
 dataFile = 'mydata.csv'
 
