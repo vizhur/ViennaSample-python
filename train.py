@@ -8,7 +8,7 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error
 from sklearn import cross_validation
 
-from azureml_sdk import data_collector
+from azureml.sdk import data_collector
 
 # create the outputs folder
 os.makedirs('./outputs', exist_ok=True)
