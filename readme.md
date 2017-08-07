@@ -1,4 +1,4 @@
-#  ![vienna icon](Images/vienna_icon.png) Getting Started
+#  ![vienna icon](images/vienna_icon.png) Getting Started
 
 This project helps get started a Vienna project.  It contains example code showing how to train and score models while taking advantage of the Vienna system in both Python and PySpark.
 
