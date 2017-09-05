@@ -5,18 +5,15 @@ import mmlspark
 from mmlspark.TrainClassifier import TrainClassifier
 from mmlspark.ComputeModelStatistics import ComputeModelStatistics
 
-from azureml.sdk import data_collector
+from azureml.logging import get_azureml_logger
 
 dataFile = 'mydata.csv'
-
-# Initialize the logger
-run_logger = data_collector.current_run() 
 
 # Start Spark application
 spark = pyspark.sql.SparkSession.builder.appName("MyApp").getOrCreate()
 
 # initialize the logger
-run_logger = data_collector.current_run()
+run_logger = get_azureml_logger()
 
 # Create a Spark dataframe out of the csv file.
 data = spark.createDataFrame(pd.read_csv(dataFile, dtype={"feature1": np.float64, "feature2": string, "label": string}))

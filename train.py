@@ -8,13 +8,13 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error
 from sklearn import cross_validation
 
-from azureml.sdk import data_collector
+from azureml.logging import get_azureml_logger
 
 # create the outputs folder
 os.makedirs('./outputs', exist_ok=True)
 
 # Initialize the logger
-run_logger = data_collector.current_run() 
+run_logger = get_azureml_logger() 
 
 # load data
 data = pd.read_csv('mydata.csv', delimiter=',', na_values="n/a")
